@@ -1,41 +1,52 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 
-const BlogForm = ({ onSubmit, handleTitleChange, handleAuthorChange, handleUrlChange, titleValue, authorValue, urlValue }) => {
+const BlogForm = React.forwardRef((props, ref) => {
   return (
-    <div>
+    <div className="blogForm">
       <h2>create new</h2>
-      <form onSubmit={ onSubmit }>
+      <form onSubmit={ props.onSubmit }>
         <div>
           title
           <input
             type="text"
-            value={ titleValue }
+            value={ props.titleValue }
             name="Title"
-            onChange={ handleTitleChange }
+            onChange={ props.handleTitleChange }
           />
         </div>
         <div>
           author
           <input
             type="text"
-            value={ authorValue }
+            value={ props.authorValue }
             name="Author"
-            onChange={ handleAuthorChange }
+            onChange={ props.handleAuthorChange }
           />
         </div>
         <div>
           url
           <input
             type="text"
-            value={ urlValue }
+            value={ props.urlValue }
             name="Url"
-            onChange={ handleUrlChange }
+            onChange={ props.handleUrlChange }
           />
         </div>
         <button type="submit">create</button>
       </form>
     </div>
   )
+});
+
+BlogForm.propTypes = {
+  titleValue: PropTypes.string.isRequired,
+  authorValue: PropTypes.string.isRequired,
+  urlValue: PropTypes.string.isRequired,
+  onSubmit: PropTypes.func.isRequired,
+  handleTitleChange: PropTypes.func.isRequired,
+  handleAuthorChange: PropTypes.func.isRequired,
+  handleUrlChange: PropTypes.func.isRequired
 }
 
 export default BlogForm;
