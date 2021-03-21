@@ -90,6 +90,18 @@ const App = () => {
     }, 5000);
   }
 
+  const deleteBlog = async (blog) => {
+    if(window.confirm(`Remove blog ${blog.title} by ${blog.author}?`))
+    {
+      try {
+        const deleteResponse = await blogService.removeBlog(blog.id);
+        setBlogs(blogs.filter(b => b.id != blog.id));
+      }catch(exception) {
+        console.log(exception);
+      }
+    }
+  }
+
   const handleLogout = () => {
     setUser(null);
     blogService.setToken('');
@@ -117,6 +129,8 @@ const App = () => {
             key={ blog.id }
             blog={ blog }
             likeHandler={ () => likeBlog(blog) }
+            canDelete={ blog.user.name === user.name }
+            deleteHandler={ () => deleteBlog(blog) }
           />
         )}
 

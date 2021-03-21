@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 
-const Blog = ({ blog, likeHandler }) => {
+const Blog = ({ blog, canDelete, likeHandler, deleteHandler }) => {
   const [ expanded, setExpanded ] = useState(false);
 
   const expandedContent = () => {
@@ -10,6 +10,7 @@ const Blog = ({ blog, likeHandler }) => {
         <p>{ blog.url }</p>
         <p>likes: { blog.likes } <button onClick={ likeHandler }>like</button></p>
         <p>{ blog.user.name }</p>
+        { canDelete && <button onClick={ deleteHandler }>remove</button> }
       </div>
     )
   }
