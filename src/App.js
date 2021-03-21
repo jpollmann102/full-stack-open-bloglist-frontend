@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import Blog from './components/Blog';
+import Notification from './components/Notification';
 import blogService from './services/blogs';
 import loginService from './services/login';
 
@@ -11,6 +12,8 @@ const App = () => {
   const [title, setTitle] = useState('');
   const [author, setAuthor] = useState('');
   const [url, setUrl] = useState('');
+  const [ notificationMessage, setNotificationMessage ] = useState(null);
+  const [ notificationClass, setNotificationClass ] = useState('error');
 
   useEffect(() => {
     blogService.getAll().then(blogs =>
@@ -40,9 +43,13 @@ const App = () => {
       window.localStorage.setItem('blog-user', JSON.stringify(userResponse));
       blogService.setToken(userResponse.token);
     }catch(exception) {
-      console.log(exception);
-      window.alert('Incorrect username or password');
+      setNotificationMessage('wrong username or password');
+      setNotificationClass('error');
     }
+
+    setTimeout(() => {
+      setNotificationMessage(null);
+    }, 5000);
   }
 
   const createBlog = async (event) => {
@@ -56,10 +63,18 @@ const App = () => {
 
     try {
       const createResponse = await blogService.createBlog(newNote);
-      setBlogs(blogs.concat(createResponse))
+      setBlogs(blogs.concat(createResponse));
+
+      setNotificationMessage(`a new blog ${createResponse.title} by ${createResponse.author} added`);
+      setNotificationClass('success');
     }catch(exception) {
-      console.log(exception);
+      setNotificationMessage('An error occurred while creating this blog');
+      setNotificationClass('error');
     }
+
+    setTimeout(() => {
+      setNotificationMessage(null);
+    }, 5000);
   }
 
   const createBlogForm = () => {
@@ -151,6 +166,10 @@ const App = () => {
 
   return (
     <div>
+      <Notification
+        message={ notificationMessage }
+        className={ notificationClass }
+      />
       { user === null && loginForm() }
       { user !== null && loggedInContent() }
     </div>
