@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import Blog from './components/Blog';
 import Togglable from './components/Togglable';
 import BlogForm from './components/BlogForm';
+import LoginForm from './components/LoginForm';
 import Notification from './components/Notification';
 import blogService from './services/blogs';
 import loginService from './services/login';
@@ -58,7 +59,7 @@ const App = () => {
     const updateBlog = {...blog, likes: blog.likes + 1 };
 
     try{
-      const updateResponse = await blogService.updateBlog(updateBlog);
+      await blogService.updateBlog(updateBlog);
       setBlogs(blogs.map(b => b.id === updateBlog.id ? updateBlog : b));
     }catch(exception){
       console.log(exception);
@@ -94,8 +95,8 @@ const App = () => {
     if(window.confirm(`Remove blog ${blog.title} by ${blog.author}?`))
     {
       try {
-        const deleteResponse = await blogService.removeBlog(blog.id);
-        setBlogs(blogs.filter(b => b.id != blog.id));
+        await blogService.removeBlog(blog.id);
+        setBlogs(blogs.filter(b => b.id !== blog.id));
       }catch(exception) {
         console.log(exception);
       }
@@ -138,42 +139,22 @@ const App = () => {
     )
   }
 
-  const loginForm = () => {
-    return (
-      <div>
-        <h2>login</h2>
-        <form onSubmit={ handleLogin }>
-          <div>
-            username
-            <input
-              type="text"
-              value={ username }
-              name="Username"
-              onChange={ ({ target }) => setUsername(target.value) }
-            />
-          </div>
-          <div>
-            password
-            <input
-              type="password"
-              value={ password }
-              name="Password"
-              onChange={ ({ target }) => setPassword(target.value) }
-            />
-          </div>
-          <button type="submit">login</button>
-        </form>
-      </div>
-    )
-  }
-
   return (
     <div>
       <Notification
         message={ notificationMessage }
         className={ notificationClass }
       />
-      { user === null && loginForm() }
+      { user === null
+        &&
+        <LoginForm
+          handleLogin={ handleLogin }
+          username={ username }
+          password={ password }
+          handleUsernameChange={ ({ target }) => setUsername(target.value) }
+          handlePasswordChange={ ({ target }) => setPassword(target.value) }
+        />
+      }
       { user !== null && loggedInContent() }
     </div>
   )
