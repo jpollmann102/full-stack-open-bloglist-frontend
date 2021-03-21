@@ -54,6 +54,17 @@ const App = () => {
     }, 5000);
   }
 
+  const likeBlog = async (blog) => {
+    const updateBlog = {...blog, likes: blog.likes + 1 };
+
+    try{
+      const updateResponse = await blogService.updateBlog(updateBlog);
+      setBlogs(blogs.map(b => b.id === updateBlog.id ? updateResponse : b));
+    }catch(exception){
+      console.log(exception);
+    }
+  }
+
   const createBlog = async (event) => {
     event.preventDefault();
 
@@ -102,7 +113,11 @@ const App = () => {
         </Togglable>
         <h2>blogs</h2>
         {blogs.map(blog =>
-          <Blog key={blog.id} blog={blog} />
+          <Blog
+            key={ blog.id }
+            blog={ blog }
+            likeHandler={ () => likeBlog(blog) }
+          />
         )}
 
       </div>
