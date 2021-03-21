@@ -5,13 +5,14 @@ import blogService from './services/blogs';
 import loginService from './services/login';
 
 const App = () => {
-  const [blogs, setBlogs] = useState([])
-  const [username, setUsername] = useState('');
-  const [password, setPassword] = useState('');
-  const [user, setUser] = useState(null);
-  const [title, setTitle] = useState('');
-  const [author, setAuthor] = useState('');
-  const [url, setUrl] = useState('');
+  const [ blogs, setBlogs ] = useState([])
+  const [ username, setUsername ] = useState('');
+  const [ password, setPassword ] = useState('');
+  const [ user, setUser ] = useState(null);
+  const [ title, setTitle ] = useState('');
+  const [ author, setAuthor ] = useState('');
+  const [ url, setUrl ] = useState('');
+  const [ showCreateForm, setShowCreateForm ] = useState(false);
   const [ notificationMessage, setNotificationMessage ] = useState(null);
   const [ notificationClass, setNotificationClass ] = useState('error');
 
@@ -67,6 +68,8 @@ const App = () => {
 
       setNotificationMessage(`a new blog ${createResponse.title} by ${createResponse.author} added`);
       setNotificationClass('success');
+
+      setShowCreateForm(false);
     }catch(exception) {
       setNotificationMessage('An error occurred while creating this blog');
       setNotificationClass('error');
@@ -115,6 +118,14 @@ const App = () => {
     )
   }
 
+  const newNoteButton = () => {
+    return (
+      <button onClick={ () => setShowCreateForm(!showCreateForm) }>
+        { showCreateForm ? 'cancel' : 'new note' }
+      </button>
+    )
+  }
+
   const handleLogout = () => {
     setUser(null);
     blogService.setToken('');
@@ -124,13 +135,14 @@ const App = () => {
   const loggedInContent = () => {
     return (
       <div>
-        <h2>Hello, { user.name }</h2>
-        { true && createBlogForm() }
+        <h2>Hello, { user.name }<button onClick={ handleLogout }>logout</button></h2>
+        { showCreateForm && createBlogForm() }
+        { true && newNoteButton() }
         <h2>blogs</h2>
         {blogs.map(blog =>
           <Blog key={blog.id} blog={blog} />
         )}
-        <button onClick={ handleLogout }>logout</button>
+
       </div>
     )
   }
