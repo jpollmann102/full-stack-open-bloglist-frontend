@@ -59,7 +59,7 @@ const App = () => {
 
     try{
       const updateResponse = await blogService.updateBlog(updateBlog);
-      setBlogs(blogs.map(b => b.id === updateBlog.id ? updateResponse : b));
+      setBlogs(blogs.map(b => b.id === updateBlog.id ? updateBlog : b));
     }catch(exception){
       console.log(exception);
     }

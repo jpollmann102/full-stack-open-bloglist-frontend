@@ -9,6 +9,7 @@ const Blog = ({ blog, likeHandler }) => {
         <p>{ blog.title } { blog.author } <button onClick={ () => setExpanded(false) }>{ expanded ? 'hide' : 'view' }</button></p>
         <p>{ blog.url }</p>
         <p>likes: { blog.likes } <button onClick={ likeHandler }>like</button></p>
+        <p>{ blog.user.name }</p>
       </div>
     )
   }
