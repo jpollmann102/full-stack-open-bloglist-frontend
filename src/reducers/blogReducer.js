@@ -1,4 +1,3 @@
-import { useSelector } from 'react-redux';
 import blogService from '../services/blogs';
 
 const sortByLikes = (a, b) => {
