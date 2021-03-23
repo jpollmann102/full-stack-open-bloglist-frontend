@@ -65,7 +65,7 @@ const App = () => {
   }
 
   return (
-    <div>
+    <div className="container">
       { user !== null && <Navbar /> }
       <Notification />
       { user === null

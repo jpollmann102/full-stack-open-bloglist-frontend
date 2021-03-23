@@ -1,4 +1,5 @@
 import React from 'react';
+import Button from 'react-bootstrap/Button';
 import { useDispatch } from 'react-redux';
 import { useResettableField } from '../hooks/index';
 import { login } from '../reducers/userReducer';
@@ -40,7 +41,7 @@ const LoginForm = () => {
           password
           <input {...passwordField.field}/>
         </div>
-        <button type="submit">login</button>
+        <Button variant="outline-primary" size="sm" type="submit">login</Button>
       </form>
     </div>
   )

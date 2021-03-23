@@ -1,4 +1,5 @@
 import React from 'react';
+import Button from 'react-bootstrap/Button';
 import { useDispatch } from 'react-redux';
 import { useResettableField } from '../hooks/index';
 import { addBlog } from '../reducers/blogReducer';
@@ -51,7 +52,7 @@ const BlogForm = () => {
           url
           <input {...urlInput.field} />
         </div>
-        <button type="submit">create</button>
+        <Button variant="primary" type="submit">create</Button>
       </form>
     </div>
   )

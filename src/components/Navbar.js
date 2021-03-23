@@ -1,4 +1,5 @@
 import React from 'react';
+import Button from 'react-bootstrap/Button';
 import { Link } from 'react-router-dom';
 import { logout } from '../reducers/userReducer';
 import { useSelector, useDispatch } from 'react-redux';
@@ -16,7 +17,7 @@ const Navbar = () => {
         users
       </Link>
       { user.name } logged in
-      <button style={{ marginLeft: '5px' }}onClick={ () => dispatch(logout()) }>logout</button>
+      <Button variant="outline-primary" size="sm" onClick={ () => dispatch(logout()) }>logout</Button>
     </nav>
   )
 }

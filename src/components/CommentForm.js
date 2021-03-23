@@ -1,4 +1,5 @@
 import React from 'react';
+import Button from 'react-bootstrap/Button';
 import { useDispatch } from 'react-redux';
 import { addComment } from '../reducers/blogReducer';
 import { useResettableField } from '../hooks/index';
@@ -25,7 +26,7 @@ const CommentForm = ({ id }) => {
       <div>
         <input {...commentField.field}/>
       </div>
-      <button type="submit">add comment</button>
+      <Button variant="primary" type="submit">add comment</Button>
     </form>
   )
 }

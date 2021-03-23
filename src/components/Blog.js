@@ -1,6 +1,6 @@
-import React, { useEffect } from 'react';
+import React from 'react';
 import Comments from './Comments';
-import blogService from '../services/blogs';
+import Button from 'react-bootstrap/Button';
 import { useHistory } from 'react-router-dom';
 import { addLike } from '../reducers/blogReducer';
 import { removeBlog } from '../reducers/blogReducer';
@@ -38,9 +38,9 @@ const Blog = ({ id }) => {
       <div>
         <h1>{ blog.title } { blog.author }</h1>
         <a href={ blog.url }>{ blog.url }</a>
-        <p>likes: { blog.likes } <button onClick={ () => like() }>like</button></p>
+        <p>likes: { blog.likes } <Button variant="primary" onClick={ () => like() }>like</Button></p>
         <p>added by { blog.user.name }</p>
-        { user.name === blog.user.name && <button onClick={ () => deleteBlog() }>remove</button> }
+        { user.name === blog.user.name && <Button variant="primary" onClick={ () => deleteBlog() }>remove</Button> }
         <Comments blog={ blog }/>
       </div>
     )
