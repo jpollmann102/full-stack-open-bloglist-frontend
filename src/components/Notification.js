@@ -5,7 +5,8 @@ const Notification = () => {
   const notification = useSelector(state => state.notification);
 
   const style = {
-    display: notification.message === '' ? 'none' : ''
+    display: notification.message === '' ? 'none' : '',
+    marginTop: '10px'
   }
 
   return (

@@ -8,7 +8,17 @@ export const addLike = (blog) => {
   return async dispatch => {
     const updatedBlog = await blogService.updateBlog({...blog, likes: blog.likes + 1});
     dispatch({
-      type: 'LIKE_BLOG',
+      type: 'UPDATE_BLOG',
+      data: updatedBlog
+    });
+  }
+}
+
+export const addComment = (id, comment) => {
+  return async dispatch => {
+    const updatedBlog = await blogService.createComment(id, comment);
+    dispatch({
+      type: 'UPDATE_BLOG',
       data: updatedBlog
     });
   }
@@ -49,12 +59,12 @@ const blogReducer = (state = [], action) => {
   console.log('action', action)
 
   switch(action.type) {
-    case('LIKE_BLOG'):
+    case('UPDATE_BLOG'):
       const blogToUpdate = state.find(b => b.id === action.data.id);
 
       if(blogToUpdate)
       {
-        return state.map(a => a.id === action.data.id ? action.data : a).sort(sortByLikes);
+        return state.map(b => b.id === action.data.id ? action.data : b).sort(sortByLikes);
       }else return state;
     case('CREATE_BLOG'):
       return state.concat(action.data).sort(sortByLikes);

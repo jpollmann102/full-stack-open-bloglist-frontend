@@ -1,4 +1,5 @@
-import React, { useState, useEffect } from 'react';
+import React, { useEffect } from 'react';
+import Comments from './Comments';
 import blogService from '../services/blogs';
 import { useHistory } from 'react-router-dom';
 import { addLike } from '../reducers/blogReducer';
@@ -7,19 +8,11 @@ import { useSelector, useDispatch } from 'react-redux';
 import { setNotification } from '../reducers/notificationReducer';
 
 const Blog = ({ id }) => {
-  const [ blog, setBlog ] = useState(null);
 
   const user = useSelector(state => state.user);
+  const blog = useSelector(state => state.blogs.find(b => b.id === id));
   const dispatch = useDispatch();
   const history = useHistory();
-
-  useEffect(() => {
-    const getBlog = async () => {
-      const response = await blogService.getBlog(id);
-      setBlog(response);
-    }
-    getBlog();
-  }, [id]);
 
   const like = () => {
     dispatch(addLike(blog));
@@ -48,6 +41,7 @@ const Blog = ({ id }) => {
         <p>likes: { blog.likes } <button onClick={ () => like() }>like</button></p>
         <p>added by { blog.user.name }</p>
         { user.name === blog.user.name && <button onClick={ () => deleteBlog() }>remove</button> }
+        <Comments blog={ blog }/>
       </div>
     )
   }else
