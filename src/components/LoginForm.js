@@ -1,42 +1,49 @@
 import React from 'react';
-import PropTypes from 'prop-types';
+import { useDispatch } from 'react-redux';
+import { useResettableField } from '../hooks/index';
+import { login } from '../reducers/userReducer';
+import { setNotification } from '../reducers/notificationReducer';
 
-const LoginForm = React.forwardRef((props, ref) => {
+const LoginForm = () => {
+  const usernameField = useResettableField('text', 'username');
+  const passwordField = useResettableField('password', 'password');
+
+  const dispatch = useDispatch();
+
+  const loginClicked = (event) => {
+    event.preventDefault();
+
+    try{
+      dispatch(login(usernameField.field.value, passwordField.field.value));
+      resetFields();
+    }catch(exception)
+    {
+      dispatch(setNotification('wrong username or password', 'error', 5));
+    }
+
+  }
+
+  const resetFields = () => {
+    usernameField.reset();
+    passwordField.reset();
+  }
 
   return (
     <div>
       <h2>login</h2>
-      <form onSubmit={ props.handleLogin }>
+      <form onSubmit={ loginClicked }>
         <div>
           username
-          <input
-            type="text"
-            value={ props.username }
-            name="Username"
-            onChange={ props.handleUsernameChange }
-          />
+          <input {...usernameField.field}/>
         </div>
         <div>
           password
-          <input
-            type="password"
-            value={ props.password }
-            name="Password"
-            onChange={ props.handlePasswordChange }
-          />
+          <input {...passwordField.field}/>
         </div>
         <button type="submit">login</button>
       </form>
     </div>
   )
-});
-
-LoginForm.propTypes = {
-  handleLogin: PropTypes.func.isRequired,
-  handleUsernameChange: PropTypes.func.isRequired,
-  handlePasswordChange: PropTypes.func.isRequired,
-  username: PropTypes.string.isRequired,
-  password: PropTypes.string.isRequired
-}
+};
 
 export default LoginForm;

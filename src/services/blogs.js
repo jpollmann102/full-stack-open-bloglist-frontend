@@ -7,11 +7,8 @@ const setToken = newToken => {
   token = `bearer ${newToken}`;
 }
 
-const getAll = async () => {
+const getAllBlogs = async () => {
   const response = await axios.get(baseUrl);
-
-  response.data.sort((a, b) => a.likes < b.likes ? 1 : a.likes === b.likes ? 0 : -1);
-
   return response.data;
 }
 
@@ -38,7 +35,7 @@ const removeBlog = async (id) => {
 }
 
 export default {
-  getAll,
+  getAllBlogs,
   createBlog,
   updateBlog,
   removeBlog,

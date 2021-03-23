@@ -1,52 +1,60 @@
 import React from 'react';
-import PropTypes from 'prop-types';
+import { useDispatch } from 'react-redux';
+import { useResettableField } from '../hooks/index';
+import { addBlog } from '../reducers/blogReducer';
+import { setNotification } from '../reducers/notificationReducer';
 
-const BlogForm = React.forwardRef((props, ref) => {
+const BlogForm = () => {
+  const dispatch = useDispatch();
+  const titleInput = useResettableField('text', 'title');
+  const authorInput = useResettableField('text', 'author');
+  const urlInput = useResettableField('text', 'url');
+
+  const createBlog = async (event) => {
+    event.preventDefault();
+
+    const newBlog = {
+      title: titleInput.field.value,
+      author: authorInput.field.value,
+      url: urlInput.field.value
+    };
+
+    try{
+      dispatch(addBlog(newBlog));
+      dispatch(setNotification(`you created a new blog '${newBlog.title}'`, 'success', 5));
+      resetFields();
+    }catch(exception)
+    {
+      dispatch(setNotification('something went wrong while creating blog', 'error', 5));
+    }
+  }
+
+  const resetFields = () => {
+    titleInput.reset();
+    authorInput.reset();
+    urlInput.reset();
+  }
+
   return (
     <div className="blogForm">
       <h2>create new</h2>
-      <form onSubmit={ props.onSubmit }>
+      <form onSubmit={ createBlog }>
         <div>
           title
-          <input
-            type="text"
-            value={ props.titleValue }
-            name="Title"
-            onChange={ props.handleTitleChange }
-          />
+          <input {...titleInput.field} />
         </div>
         <div>
           author
-          <input
-            type="text"
-            value={ props.authorValue }
-            name="Author"
-            onChange={ props.handleAuthorChange }
-          />
+          <input {...authorInput.field} />
         </div>
         <div>
           url
-          <input
-            type="text"
-            value={ props.urlValue }
-            name="Url"
-            onChange={ props.handleUrlChange }
-          />
+          <input {...urlInput.field} />
         </div>
         <button type="submit">create</button>
       </form>
     </div>
   )
-});
-
-BlogForm.propTypes = {
-  titleValue: PropTypes.string.isRequired,
-  authorValue: PropTypes.string.isRequired,
-  urlValue: PropTypes.string.isRequired,
-  onSubmit: PropTypes.func.isRequired,
-  handleTitleChange: PropTypes.func.isRequired,
-  handleAuthorChange: PropTypes.func.isRequired,
-  handleUrlChange: PropTypes.func.isRequired
 }
 
 export default BlogForm;
