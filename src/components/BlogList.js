@@ -1,5 +1,4 @@
 import React from 'react';
-import Blog from './Blog';
 import { Link } from 'react-router-dom';
 import { useSelector } from 'react-redux';
 
@@ -11,7 +10,7 @@ const BlogList = () => {
     <div>
       <h2>blogs</h2>
         {blogs.map(blog =>
-          <div className="blog">
+          <div className="blog" key={ blog.id }>
             <Link to={`/blogs/${blog.id}`}>
               { blog.title }
             </Link>
