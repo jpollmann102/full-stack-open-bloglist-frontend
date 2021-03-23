@@ -1,20 +1,22 @@
 import React, { useEffect } from 'react';
-import UserList from './components/UserList';
+import Blog from './components/Blog';
 import User from './components/User';
 import MainView from './components/MainView';
-import { login, logout } from './reducers/userReducer';
+import UserList from './components/UserList';
 import LoginForm from './components/LoginForm';
-import { Switch, Route, useRouteMatch } from 'react-router-dom';
 import Notification from './components/Notification';
+import { login, logout } from './reducers/userReducer';
 import { useSelector, useDispatch } from 'react-redux';
 import { initializeBlogs } from './reducers/blogReducer';
+import { Switch, Route, useRouteMatch } from 'react-router-dom';
 
 const App = () => {
 
   const dispatch = useDispatch();
 
   const user = useSelector(state => state.user);
-  const routeMatch = useRouteMatch('/users/:id');
+  const userRouteMatch = useRouteMatch('/users/:id');
+  const blogsRouteMatch = useRouteMatch('/blogs/:id');
 
   useEffect(() => dispatch(login()), []);
 
@@ -25,10 +27,17 @@ const App = () => {
     }
   }, [dispatch, user]);
 
-  const matchedRoute = () => {
-    if(routeMatch)
+  const userMatchedRoute = () => {
+    if(userRouteMatch)
     {
-      return routeMatch.params.id;
+      return userRouteMatch.params.id;
+    }else return undefined;
+  }
+
+  const blogsMatchedRoute = () => {
+    if(blogsRouteMatch)
+    {
+      return blogsRouteMatch.params.id;
     }else return undefined;
   }
 
@@ -40,10 +49,13 @@ const App = () => {
         <button onClick={ () => dispatch(logout()) }>logout</button>
         <Switch>
           <Route path="/users/:id">
-            <User id={ matchedRoute() }/>
+            <User id={ userMatchedRoute() }/>
           </Route>
           <Route path="/users">
             <UserList />
+          </Route>
+          <Route path="/blogs/:id">
+            <Blog id={ blogsMatchedRoute() }/>
           </Route>
           <Route path="/">
             <MainView />
